@@ -29,7 +29,8 @@ Parameters: 2D list of strs
 Returns: int
 '''
 def getCorpusLength(corpus):
-    return sum([len(i) for i in corpus])
+    length=sum([len(i) for i in corpus])
+    return length
 
 
 '''
