@@ -29,7 +29,8 @@ Parameters: 2D list of strs
 Returns: int
 '''
 def getCorpusLength(corpus):
-    return sum([len(i) for i in corpus])
+    length=sum([len(i) for i in corpus])
+    return length
 
 
 '''
@@ -39,7 +40,8 @@ Parameters: 2D list of strs
 Returns: list of strs
 '''
 def buildVocabulary(corpus):
-    return list(set(i for j in corpus for i in j))
+    sort_names=list(set(i for j in corpus for i in j))
+    return sort_names
 
 
 '''
@@ -113,7 +115,8 @@ Parameters: list of strs
 Returns: list of floats
 '''
 def buildUniformProbs(unigrams):
-    return  [1/len(unigrams) for i in unigrams]
+    uniform_probs=[1/len(unigrams) for i in unigrams]
+    return  uniform_probs
 
 
 '''
@@ -123,7 +126,8 @@ Parameters: list of strs ; dict mapping strs to ints ; int
 Returns: list of floats
 '''
 def buildUnigramProbs(unigrams, unigramCounts, totalCount):
-    return [j/totalCount for i,j in unigramCounts.items()]
+    unigram_probs=[j/totalCount for i,j in unigramCounts.items()]
+    return unigram_probs
 
 
 '''
@@ -313,15 +317,15 @@ if __name__ == "__main__":
     #test.week1Tests()
     print("\n" + "#"*15 + " WEEK 1 OUTPUT " + "#" * 15 + "\n")
     #test.runWeek1()
-    #test.testLoadBook()
-    #test.testGetCorpusLength()
-    #test.testBuildVocabulary()
-    #test.testCountUnigrams()
+    # test.testLoadBook()
+    # test.testGetCorpusLength()
+    # test.testBuildVocabulary()
+    # test.testCountUnigrams()
     # test.testGetStartWords()
     # test.testCountStartWords()
-    #test.testCountBigrams()
-    ## Uncomment these for Week 2 ##
-    #test.testBuildUniformProbs()
+    # test.testCountBigrams()
+    # # Uncomment these for Week 2 ##
+    # test.testBuildUniformProbs()
     test.testBuildUnigramProbs()
 """
     print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
