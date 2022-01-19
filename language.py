@@ -29,7 +29,8 @@ Parameters: 2D list of strs
 Returns: int
 '''
 def getCorpusLength(corpus):
-    return sum([len(i) for i in corpus])
+    length=sum([len(i) for i in corpus])
+    return length
 
 
 '''
@@ -39,7 +40,8 @@ Parameters: 2D list of strs
 Returns: list of strs
 '''
 def buildVocabulary(corpus):
-    return list(set(i for j in corpus for i in j))
+    sort_names=list(set(i for j in corpus for i in j))
+    return sort_names
 
 
 '''
