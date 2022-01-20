@@ -180,10 +180,10 @@ Returns: str
 from random import choices
 def generateTextFromUnigrams(count, words, probs):
     word=choices(words,weights=probs,k=count)
-    s=""
+    string=""
     for i in word:
-        s=s+i+" "
-    return s
+        string+=i+" "
+    return string
 
 
 '''
