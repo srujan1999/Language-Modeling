@@ -259,6 +259,20 @@ Parameters: 2D list of strs
 Returns: None
 '''
 def graphTopStartWords(corpus):
+    import matplotlib.pyplot as plt
+    start_words=getStartWords(corpus)
+    count=countStartWords(corpus)
+    length=getCorpusLength(corpus)
+    probs=buildUnigramProbs(start_words,count,length)
+    Top_50=getTopWords(50, start_words, probs, ignore)
+    names=[i for i in Top_50.keys()]
+    values=[j for j in Top_50.values()]
+    plt.bar(names, values, width=0.6)
+    plt.xticks(rotation='vertical')
+    plt.xlabel("Top Start Words")
+    plt.ylabel("Probs")
+    plt.title("Top50StartWords")
+    plt.show()
     return
 
 
