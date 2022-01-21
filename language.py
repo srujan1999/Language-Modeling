@@ -307,7 +307,42 @@ Parameters: 2D list of strs ; 2D list of strs ; int
 Returns: dict mapping strs to (lists of values)
 '''
 def setupChartData(corpus1, corpus2, topWordCount):
-    return
+    top_words=[]
+    corpus1_probs=[]
+    corpus2_probs=[]
+    dicts={}
+
+    corp1=buildVocabulary(corpus1)
+    corp1_unicount=countUnigrams(corpus1)
+    corp1_probs=buildUnigramProbs(corp1,corp1_unicount, getCorpusLength(corpus1))
+    Top_crop1=getTopWords(topWordCount, corp1, corp1_probs, ignore)
+
+    corp2=buildVocabulary(corpus2)
+    corp2_unicount=countUnigrams(corpus2)
+    corp2_probs=buildUnigramProbs(corp2,corp2_unicount, getCorpusLength(corpus2))
+    Top_crop2=getTopWords(topWordCount, corp2, corp2_probs, ignore)
+
+    top_words+=list(Top_crop1.keys())
+    for i in Top_crop2.keys():
+        if i not in top_words:
+            top_words.append(i)
+    
+    for i in top_words:
+        if i in corp1:
+            index=corp1.index(i)
+            corpus1_probs.append(corp1_probs[index])
+        else:
+            corpus1_probs.append(0)
+        if i in corp2:
+            index=corp2.index(i)
+            corpus2_probs.append(corp2_probs[index])
+        else:
+            corpus2_probs.append(0)
+    
+    dicts["topWords"]=top_words
+    dicts["corpus1Probs"]=corpus1_probs
+    dicts["corpus2Probs"]=corpus2_probs
+    return dicts
 
 
 '''
@@ -317,6 +352,12 @@ Parameters: 2D list of strs ; str ; 2D list of strs ; str ; int ; str
 Returns: None
 '''
 def graphTopWordsSideBySide(corpus1, name1, corpus2, name2, numWords, title):
+    data=setupChartData(corpus1, corpus2, numWords)
+    xValues=data["topWords"]
+    values1=data["corpus1Probs"]
+    values2=data["corpus2Probs"]
+    sideBySideBarPlots(xValues, values1, values2, name1, name2, title)
+
     return
 
 
@@ -327,6 +368,11 @@ Parameters: 2D list of strs ; 2D list of strs ; int ; str
 Returns: None
 '''
 def graphTopWordsInScatterplot(corpus1, corpus2, numWords, title):
+    data=setupChartData(corpus1, corpus2, numWords)
+    labels=data["topWords"]
+    xs=data["corpus1Probs"]
+    ys=data["corpus2Probs"]
+    scatterPlot(xs, ys, labels, title)
     return
 
 
@@ -424,6 +470,7 @@ if __name__ == "__main__":
     #test.testGenerateTextFromUnigrams()
     #test.testGenerateTextFromBigrams()
     #test.runWeek2()
+    test.testSetupChartData()
     test.runWeek3()
     
 """
