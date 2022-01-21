@@ -40,7 +40,12 @@ Parameters: 2D list of strs
 Returns: list of strs
 '''
 def buildVocabulary(corpus):
-    sort_names=list(set(i for j in corpus for i in j))
+    # sort_names=list(set(i for j in corpus for i in j))
+    sort_names=[]
+    for j in corpus:
+        for i in j:
+            if i not in sort_names:
+                sort_names.append(i)
     return sort_names
 
 
@@ -52,9 +57,15 @@ Returns: dict mapping strs to ints
 '''
 def countUnigrams(corpus):
     dicts={}
-    data=[j[i] for j in corpus for i in range(len(j))]
-    for i in data:
-        dicts[i]=data.count(i)
+    # data=[j[i] for j in corpus for i in range(len(j))]
+    # for i in data:
+    #     dicts[i]=data.count(i)
+    for i in corpus:
+        for j in i:
+            if j not in dicts:
+                dicts[j]=1
+            else:
+                dicts[j]+=1
     return dicts
 
 
@@ -223,6 +234,21 @@ Parameters: 2D list of strs
 Returns: None
 '''
 def graphTop50Words(corpus):
+    import matplotlib.pyplot as plt
+    no_dups=buildVocabulary(corpus)
+    count=countUnigrams(corpus)
+    length=getCorpusLength(corpus)
+    probs=buildUnigramProbs(no_dups,count,length)
+    Top_50=getTopWords(50, no_dups, probs, ignore)
+    names=[i for i in Top_50.keys()]
+    values=[j for j in Top_50.values()]
+    plt.bar(names, values, width=0.6)
+    plt.xticks(rotation='vertical')
+    plt.xlabel("Top 50 Words")
+    plt.ylabel("Probs")
+    plt.title("Top50Words")
+    plt.show()
+    
     return
 
 
@@ -358,7 +384,7 @@ if __name__ == "__main__":
     #test.testLoadBook()
     # test.testGetCorpusLength()
     # test.testBuildVocabulary()
-    # test.testCountUnigrams()
+    #test.testCountUnigrams()
     # test.testGetStartWords()
     # test.testCountStartWords()
     # test.testCountBigrams()
@@ -368,7 +394,9 @@ if __name__ == "__main__":
     # test.testBuildBigramProbs()
     # test.testGetTopWords()
     #test.testGenerateTextFromUnigrams()
-    test.testGenerateTextFromBigrams()
+    #test.testGenerateTextFromBigrams()
+    #test.runWeek2()
+    test.runWeek3()
     
 """
     print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
@@ -377,6 +405,7 @@ if __name__ == "__main__":
     test.runWeek2()
 """
     ## Uncomment these for Week 3 ##
+    
 """
     print("\n" + "#"*15 + " WEEK 3 OUTPUT " + "#" * 15 + "\n")
     test.runWeek3()
