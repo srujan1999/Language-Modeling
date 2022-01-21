@@ -246,7 +246,7 @@ def graphTop50Words(corpus):
     plt.xticks(rotation='vertical')
     plt.xlabel("Top 50 Words")
     plt.ylabel("Probs")
-    plt.title("Top50Words")
+    plt.title("Top 50 Words")
     plt.show()
     
     return
@@ -271,7 +271,7 @@ def graphTopStartWords(corpus):
     plt.xticks(rotation='vertical')
     plt.xlabel("Top Start Words")
     plt.ylabel("Probs")
-    plt.title("Top50StartWords")
+    plt.title("Top 50 StartWords")
     plt.show()
     return
 
@@ -283,6 +283,20 @@ Parameters: 2D list of strs ; str
 Returns: None
 '''
 def graphTopNextWords(corpus, word):
+    import matplotlib.pyplot as plt
+    count=countUnigrams(corpus)
+    bigrm_count=countBigrams(corpus)
+    probs=buildBigramProbs(count, bigrm_count)
+    Top_50=getTopWords(10, probs[word]["words"], probs[word]["probs"], ignore)
+    names=[i for i in Top_50.keys()]
+    values=[j for j in Top_50.values()]
+    plt.bar(names, values, width=0.6)
+    plt.xticks(rotation='vertical')
+    plt.xlabel("Top Words")
+    plt.ylabel("Probs")
+    plt.title("Top 10 Next Words")
+    plt.show()
+
     return
 
 
