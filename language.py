@@ -471,7 +471,6 @@ if __name__ == "__main__":
     #test.testGenerateTextFromBigrams()
     #test.runWeek2()
     test.testSetupChartData()
-
     test.runWeek3()
     
 """
