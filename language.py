@@ -237,8 +237,8 @@ def graphTop50Words(corpus):
     import matplotlib.pyplot as plt
     no_dups=buildVocabulary(corpus)
     count=countUnigrams(corpus)
-    length=getCorpusLength(corpus)
-    probs=buildUnigramProbs(no_dups,count,length)
+    # length=getCorpusLength(corpus)
+    probs=buildUnigramProbs(no_dups,count,len(corpus))
     Top_50=getTopWords(50, no_dups, probs, ignore)
     names=[i for i in Top_50.keys()]
     values=[j for j in Top_50.values()]
@@ -262,8 +262,8 @@ def graphTopStartWords(corpus):
     import matplotlib.pyplot as plt
     start_words=getStartWords(corpus)
     count=countStartWords(corpus)
-    length=getCorpusLength(corpus)
-    probs=buildUnigramProbs(start_words,count,length)
+    # length=getCorpusLength(corpus)
+    probs=buildUnigramProbs(start_words,count,len(corpus))
     Top_50=getTopWords(50, start_words, probs, ignore)
     names=[i for i in Top_50.keys()]
     values=[j for j in Top_50.values()]
