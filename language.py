@@ -29,8 +29,8 @@ Parameters: 2D list of strs
 Returns: int
 '''
 def getCorpusLength(corpus):
-    length=sum([len(i) for i in corpus])
-    return length
+    corpus_length=sum([len(i) for i in corpus])
+    return corpus_length
 
 
 '''
@@ -41,12 +41,12 @@ Returns: list of strs
 '''
 def buildVocabulary(corpus):
     # sort_names=list(set(i for j in corpus for i in j))
-    sort_names=[]
+    uniq_names=[]
     for j in corpus:
         for i in j:
-            if i not in sort_names:
-                sort_names.append(i)
-    return sort_names
+            if i not in uniq_names:
+                uniq_names.append(i)
+    return uniq_names
 
 
 '''
@@ -56,17 +56,17 @@ Parameters: 2D list of strs
 Returns: dict mapping strs to ints
 '''
 def countUnigrams(corpus):
-    dicts={}
+    unigram_freq={}
     # data=[j[i] for j in corpus for i in range(len(j))]
     # for i in data:
     #     dicts[i]=data.count(i)
     for i in corpus:
         for j in i:
-            if j not in dicts:
-                dicts[j]=1
+            if j not in unigram_freq:
+                unigram_freq[j]=1
             else:
-                dicts[j]+=1
-    return dicts
+                unigram_freq[j]+=1
+    return unigram_freq
 
 
 '''
@@ -76,11 +76,11 @@ Parameters: 2D list of strs
 Returns: list of strs
 '''
 def getStartWords(corpus):
-    list1=[]
+    start_words=[]
     for i in corpus:
-        if i[0] not in list1:
-            list1.append(i[0])
-    return list1
+        if i[0] not in start_words:
+            start_words.append(i[0])
+    return start_words
 
 
 '''
@@ -90,12 +90,12 @@ Parameters: 2D list of strs
 Returns: dict mapping strs to ints
 '''
 def countStartWords(corpus):
-    dicts={}
-    data=getStartWords(corpus)
-    startwords=[corpus[i][0] for i in range(len(corpus))]
-    for i in data:
-        dicts[i]=startwords.count(i)
-    return dicts
+    start_words_freq={}
+    start_words_list=getStartWords(corpus)
+    Total_startwords=[corpus[i][0] for i in range(len(corpus))]
+    for i in start_words_list:
+        start_words_freq[i]=Total_startwords.count(i)
+    return start_words_freq
 
 
 '''
@@ -105,16 +105,16 @@ Parameters: 2D list of strs
 Returns: dict mapping strs to (dicts mapping strs to ints)
 '''
 def countBigrams(corpus):
-    dicts={}
+    bigrams_freq={}
     for i in range(len(corpus)):
         for j in range(len(corpus[i])-1):
-            first,second= corpus[i][j],corpus[i][j+1]
-            if first not in dicts:
-                dicts[first]={}
-            if second not in dicts[first]:
-                dicts[first][second]=0
-            dicts[first][second]+=1
-    return dicts
+            first_word,second_word= corpus[i][j],corpus[i][j+1]
+            if first_word not in bigrams_freq:
+                bigrams_freq[first_word]={}
+            if second_word not in bigrams_freq[first_word]:
+                bigrams_freq[first_word][second_word]=0
+            bigrams_freq[first_word][second_word]+=1
+    return bigrams_freq
 
 
 ### WEEK 2 ###
@@ -148,15 +148,15 @@ Parameters: dict mapping strs to ints ; dict mapping strs to (dicts mapping strs
 Returns: dict mapping strs to (dicts mapping strs to (lists of values))
 '''
 def buildBigramProbs(unigramCounts, bigramCounts):
-    dicts={}
+    bigrams_probs={}
     for i in bigramCounts:
         word=[]
         prob=[]
         for j in bigramCounts[i]:
             word.append(j)
             prob.append(bigramCounts[i][j]/unigramCounts[i])
-        dicts[i]={"words":word,"probs":prob}
-    return dicts
+        bigrams_probs[i]={"words":word,"probs":prob}
+    return bigrams_probs
 
 
 '''
@@ -174,12 +174,12 @@ def getTopWords(count, words, probs, ignoreList):
     #             if probs[j]==max_prob[i]:
     #                 dicts[words[j]]=probs[j]
     # dicts=dict(list(dicts.items())[:count])
-    temp={}
+    no_ignorelist_words={}
     for i in range(len(words)):
         if words[i] not in ignoreList:
-            temp[words[i]]=probs[i]
-    data=dict(sorted(temp.items(),key=lambda x:x[1],reverse=True)[:count])
-    return data
+            no_ignorelist_words[words[i]]=probs[i]
+    Top_words=dict(sorted(no_ignorelist_words.items(),key=lambda x:x[1],reverse=True)[:count])
+    return Top_words
 
 
 '''
@@ -310,7 +310,7 @@ def setupChartData(corpus1, corpus2, topWordCount):
     top_words=[]
     corpus1_probs=[]
     corpus2_probs=[]
-    dicts={}
+    chart_data_dicts={}
 
     corp1=buildVocabulary(corpus1)
     corp1_unicount=countUnigrams(corpus1)
@@ -339,10 +339,10 @@ def setupChartData(corpus1, corpus2, topWordCount):
         else:
             corpus2_probs.append(0)
     
-    dicts["topWords"]=top_words
-    dicts["corpus1Probs"]=corpus1_probs
-    dicts["corpus2Probs"]=corpus2_probs
-    return dicts
+    chart_data_dicts["topWords"]=top_words
+    chart_data_dicts["corpus1Probs"]=corpus1_probs
+    chart_data_dicts["corpus2Probs"]=corpus2_probs
+    return chart_data_dicts
 
 
 '''
@@ -455,20 +455,20 @@ if __name__ == "__main__":
     # test.week1Tests()
     # print("\n" + "#"*15 + " WEEK 1 OUTPUT " + "#" * 15 + "\n")
     #test.runWeek1()
-    #test.testLoadBook()
-    # test.testGetCorpusLength()
-    # test.testBuildVocabulary()
-    #test.testCountUnigrams()
-    # test.testGetStartWords()
-    # test.testCountStartWords()
-    # test.testCountBigrams()
-    # # Uncomment these for Week 2 ##
-    # test.testBuildUniformProbs()
-    # test.testBuildUnigramProbs()
-    # test.testBuildBigramProbs()
-    # test.testGetTopWords()
-    #test.testGenerateTextFromUnigrams()
-    #test.testGenerateTextFromBigrams()
+    test.testLoadBook()
+    test.testGetCorpusLength()
+    test.testBuildVocabulary()
+    test.testCountUnigrams()
+    test.testGetStartWords()
+    test.testCountStartWords()
+    test.testCountBigrams()
+    # Uncomment these for Week 2 ##
+    test.testBuildUniformProbs()
+    test.testBuildUnigramProbs()
+    test.testBuildBigramProbs()
+    test.testGetTopWords()
+    test.testGenerateTextFromUnigrams()
+    test.testGenerateTextFromBigrams()
     #test.runWeek2()
     test.testSetupChartData()
     test.runWeek3()
